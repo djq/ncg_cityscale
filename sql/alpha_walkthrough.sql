@@ -29,7 +29,7 @@ SELECT *
       SELECT gid AS id,
           source::int4 AS source,
           target::int4 AS target,
-          length::float8 AS distance
+          length::float8 AS cost
       FROM dublin_traffic',
       23376,
       10000,
@@ -38,12 +38,37 @@ SELECT *
    ON
    dublin_nodes.id = route.vertex_id
 
+   -- there is something strange going on here
+   -- can't tell if it is the points joining on the wrong ID, or something else
+    DROP TABLE tmp_cost;
+    CREATE TABLE tmp_cost AS
+    SELECT 
+       d.geom,
+       route.cost
+       FROM dublin_traffic as d
+       JOIN
+       (SELECT * FROM driving_distance('
+          SELECT gid AS id,
+              source::int4 AS source,
+              target::int4 AS target,
+              length::float8 AS cost
+          FROM dublin_traffic',
+          23376,
+          10000,
+          false,
+          false)) AS route
+       ON
+       d.target = route.vertex_id
+       -- this works fine (must be a problem with nodes/node ID)
+
+
 -- The following queries create the table and insert an alpha shape for all points with a cost of less than 1500:
 -- this uses a ConvexHull (is concave more appropriate?)
 DROP TABLE home_isodist;
 CREATE TABLE home_isodist (id serial, max_cost double precision);
 SELECT AddGeometryColumn('home_isodist','geom',900913,'POLYGON',2);
 
+-- convex
 INSERT INTO home_isodist (max_cost, geom) (
   SELECT 
     1500, 
@@ -51,6 +76,13 @@ INSERT INTO home_isodist (max_cost, geom) (
   FROM tmp_cost 
   WHERE cost < 1500);
 
+-- concave
+INSERT INTO home_isodist (max_cost, geom) (
+  SELECT 
+    1500, 
+    ST_ConcaveHull(ST_Collect(geom), 0.99) As geom
+  FROM tmp_cost 
+  WHERE cost < 1500);
 
 -- need to make this work with model simulation output
 /*   
