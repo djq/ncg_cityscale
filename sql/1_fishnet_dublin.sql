@@ -53,18 +53,37 @@ SELECT source
 			LIMIT 1;
 */
 
-
+DROP TABLE _test_distances;
 CREATE TABLE _test_distances AS 
+
+
+WITH tmp_distances as (
 SELECT
-	f.gid,
-	f.geom as geom,
+	f.gid,	
+	f.geom,
 	d.source as road_id,
 	st_distance(ST_Centroid(d.geom), f.geom) as distance
 FROM 
 	_fishnet_centroid as f,
 	dublin_traffic as d
 WHERE ST_DWithin(d.geom, f.geom, 1000)
-AND ST_Intersects(d.geom, f.geom)
-AND st_distance(ST_Centroid(d.geom), f.geom) > 0
-ORDER BY ST_Centroid(d.geom) <-> f.geom;
+AND ST_Distance(ST_Centroid(d.geom), f.geom) > 0
+ORDER BY ST_Centroid(d.geom) <-> f.geom),
+
+-- now from table _test_distances get minimum distance
+min_distances as (
+SELECT
+	gid,	
+	MIN(distance) as distance
+FROM tmp_distances
+GROUP BY gid)
+
+-- join on gid and distance
+SELECT
+	t.*
+FROM min_distances as m	
+LEFT OUTER JOIN tmp_distances as t	
+ON m.gid = t.gid 
+and m.distance = t.distance
+
 
