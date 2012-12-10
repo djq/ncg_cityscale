@@ -56,34 +56,56 @@ SELECT source
 DROP TABLE _test_distances;
 CREATE TABLE _test_distances AS 
 
+	WITH tmp_distances as (
+	SELECT
+		f.gid as gid,	
+		d.geom,
+		d.source as road_id,
+		st_distance(ST_Centroid(d.geom), f.geom) as distance
+	FROM 
+		_fishnet_centroid as f,
+		dublin_traffic as d
+	WHERE ST_DWithin(d.geom, f.geom, 1000)
+	AND ST_Distance(ST_Centroid(d.geom), f.geom) > 0
+	ORDER BY ST_Centroid(d.geom) <-> f.geom),
 
-WITH tmp_distances as (
-SELECT
-	f.gid,	
-	f.geom,
-	d.source as road_id,
-	st_distance(ST_Centroid(d.geom), f.geom) as distance
+	-- now from table _test_distances get minimum distance
+	min_distances as (
+	SELECT
+		gid,	
+		MIN(distance) as distance
+	FROM tmp_distances
+	GROUP BY gid)
+
+	-- join tmp_distances and min_distances
+	SELECT
+		t.*
+	FROM min_distances as m	
+	LEFT OUTER JOIN tmp_distances as t	
+	ON m.gid = t.gid 
+	and m.distance = t.distance
+
+
+-- join fishnet centroid gid and nearest road to original fishnet polygon table
+DROP TABLE _fishnet_road_source;
+CREATE TABLE _fishnet_road_source as
+SELECT 
+	f.*,
+	t.road_id
 FROM 
-	_fishnet_centroid as f,
-	dublin_traffic as d
-WHERE ST_DWithin(d.geom, f.geom, 1000)
-AND ST_Distance(ST_Centroid(d.geom), f.geom) > 0
-ORDER BY ST_Centroid(d.geom) <-> f.geom),
+	_test_distances as t
+LEFT OUTER JOIN 
+	_fishnet_dublin as f
+ON t.gid = f.gid
 
--- now from table _test_distances get minimum distance
-min_distances as (
-SELECT
-	gid,	
-	MIN(distance) as distance
-FROM tmp_distances
-GROUP BY gid)
 
--- join on gid and distance
-SELECT
-	t.*
-FROM min_distances as m	
-LEFT OUTER JOIN tmp_distances as t	
-ON m.gid = t.gid 
-and m.distance = t.distance
+
+
+
+
+
+
+
+
 
 
