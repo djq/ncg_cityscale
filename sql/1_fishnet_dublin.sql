@@ -1,8 +1,7 @@
 -- generate a fishnet that covers entire greater dublin area
--- find road segment closest to centroid 
+-- find road segment closest to centroid and relate cell value to road_id
 
 /*
-
 SELECT ST_Extent(geom) FROM dublin_traffic
 "BOX(-788694.907595197 6956099.32479378,-669072.585789414 7169086.58934792)"
 
@@ -17,7 +16,6 @@ y: 7169086 - 6956099
 
 > 212987 / 250
 [1] 851.948
-
 */
 
 DROP TABLE _fishnet_dublin;
@@ -34,6 +32,7 @@ CREATE INDEX idx_spatial_test_fishnet ON _fishnet_dublin USING gist (geom);
 
 
 -- now calculate centrois of all of these cells and store as a table
+DROP TABLE _fishnet_centroid;
 CREATE TABLE _fishnet_centroid AS 
 SELECT 
 	f.gid,
@@ -83,7 +82,7 @@ CREATE TABLE _test_distances AS
 	FROM min_distances as m	
 	LEFT OUTER JOIN tmp_distances as t	
 	ON m.gid = t.gid 
-	and m.distance = t.distance
+	and m.distance = t.distance;
 
 
 -- join fishnet centroid gid and nearest road to original fishnet polygon table
@@ -96,7 +95,10 @@ FROM
 	_test_distances as t
 LEFT OUTER JOIN 
 	_fishnet_dublin as f
-ON t.gid = f.gid
+ON t.gid = f.gid;
+
+CREATE UNIQUE INDEX idx_fishnet_road_source ON _fishnet_road_source (gid);
+CREATE INDEX idx_spatial_fishnet_road_source ON _fishnet_road_source USING gist (geom);
 
 
 
