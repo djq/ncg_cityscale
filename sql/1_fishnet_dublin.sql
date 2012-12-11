@@ -21,11 +21,11 @@ y: 7169086 - 6956099
 DROP TABLE _fishnet_dublin;
 CREATE TABLE _fishnet_dublin as
 SELECT 
-	--generate_series(1,25560) as gid, -- max value is nrows * ncols
-	--ST_SetSRID(ST_CreateFishnet(213, 120, 1000, 1000, -788694, 6956099), 900913) AS geom;
+	generate_series(1,25560) as gid, -- max value is nrows * ncols
+	ST_SetSRID(ST_CreateFishnet(213, 120, 1000, 1000, -788694, 6956099), 900913) AS geom;
 	-- using temporary values for testing
-	generate_series(1,2500) as gid, -- max value is nrows * ncols
-	ST_SetSRID(ST_CreateFishnet(50, 50, 1000, 1000, -788694, 6956099), 900913) AS geom;
+	--generate_series(1,2500) as gid, -- max value is nrows * ncols
+	--ST_SetSRID(ST_CreateFishnet(50, 50, 1000, 1000, -788694, 6956099), 900913) AS geom;
 
 CREATE UNIQUE INDEX idx_test_fishnet ON _fishnet_dublin (gid);
 CREATE INDEX idx_spatial_test_fishnet ON _fishnet_dublin USING gist (geom);
@@ -83,7 +83,7 @@ CREATE TABLE _test_distances AS
 	LEFT OUTER JOIN tmp_distances as t	
 	ON m.gid = t.gid 
 	and m.distance = t.distance;
-
+	CREATE INDEX idx_spatial_test_distances ON _test_distances USING gist (geom);
 
 -- join fishnet centroid gid and nearest road to original fishnet polygon table
 DROP TABLE _fishnet_road_source;
@@ -97,7 +97,7 @@ LEFT OUTER JOIN
 	_fishnet_dublin as f
 ON t.gid = f.gid;
 
-CREATE UNIQUE INDEX idx_fishnet_road_source ON _fishnet_road_source (gid);
+--CREATE UNIQUE INDEX idx_fishnet_road_source ON _fishnet_road_source (gid);
 CREATE INDEX idx_spatial_fishnet_road_source ON _fishnet_road_source USING gist (geom);
 
 
