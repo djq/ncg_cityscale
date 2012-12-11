@@ -5,7 +5,7 @@
 /***************
 drop definitions
 ***************/
-DROP FUNCTION _ncg_driving_distance( integer, double precision );
+DROP FUNCTION _ncg_driving_distance( integer, integer, double precision );
 DROP TYPE _ncg_driving_distance_table;
 
 /***************
@@ -13,6 +13,7 @@ table definition
 ***************/
 -- create object type for _ncg_driving_distance
 CREATE TYPE _ncg_driving_distance_table AS (
+  fish_id integer,
 	road_id integer, 
 	cost    double precision,
 	geom    geometry );
@@ -21,6 +22,7 @@ CREATE TYPE _ncg_driving_distance_table AS (
 function definition
 *******************/
 CREATE OR REPLACE FUNCTION _ncg_driving_distance(
+  fish_id    integer,
 	road_id    integer,
 	distance   double precision
 	)
@@ -28,6 +30,7 @@ RETURNS SETOF _ncg_driving_distance_table AS $$
 BEGIN  
   RETURN QUERY 
   SELECT
+    fish_id,
    	road_id,
    	route.cost,
    	d.geom   
@@ -58,5 +61,14 @@ SELECT * FROM _ncg_driving_distance(4052, 1000.0);
 */
 
 -- testing using a column of IDs is more complicated
-
+/*
+DROP TABLE _test_dublin_driving_distance;
+CREATE TABLE _test_dublin_driving_distance AS
+SELECT  (t2.table_dist).fish_id,
+        (t2.table_dist).road_id,
+        (t2.table_dist).cost,
+        (t2.table_dist).geom
+FROM (SELECT _ncg_driving_distance(t.fish_id, t.road_id, 2000.0) as table_dist
+     FROM _fishnet_road_source_test t ) t2;
+*/
 

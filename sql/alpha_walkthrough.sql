@@ -9,10 +9,10 @@ SET length = ST_Length(geom);
 DROP TABLE dublin_nodes;
 CREATE TABLE dublin_nodes AS
 SELECT
-  id,
-  ST_SetSRID(ST_MakePoint(x1, y1), 900913) as geom
+  source,
+  ST_SetSRID(ST_MakePoint(x2, y2), 900913) as geom
 FROM dublin_traffic;
-CREATE UNIQUE INDEX idx_dublin_nodes ON dublin_nodes (id);
+--CREATE UNIQUE INDEX idx_dublin_nodes ON dublin_nodes (source);
 CREATE INDEX idx_spatial_dublin_nodes ON dublin_nodes USING gist (geom);
 
 -- now start to construct reach using great instructions from here:

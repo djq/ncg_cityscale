@@ -13,20 +13,20 @@ INSERT INTO home_isodist (max_cost, geom) (
 drop definitions
 ***************/
 DROP TABLE _ncg_isodist;
-DROP FUNCTION _ncg_isodist( integer);
+DROP FUNCTION _ncg_isodist(integer, integer);
 DROP TYPE _ncg_isodist_table;
 
 /***************
 table definition
 ***************/
 -- create table to store results (I think?)
-CREATE TABLE _ncg_isodist (gid integer, max_cost double precision);
+CREATE TABLE _ncg_isodist (fish_id integer, road_id integer, max_cost double precision);
 SELECT AddGeometryColumn('_ncg_isodist','geom',900913,'POLYGON',2);
 
 -- create object type for _ncg_driving_distance
 CREATE TYPE _ncg_isodist_table AS (
 	road_id integer, 
-	fishnet_id integer, 
+	fish_id integer, 
 	cost    double precision,
 	geom    geometry );
 
@@ -89,37 +89,44 @@ $$ LANGUAGE plpgsql;
 */
 
 CREATE OR REPLACE FUNCTION _ncg_isodist(
-	id    integer
+	_fish_id    integer,
+	_road_id    integer
 	)
 RETURNS VOID AS $$ 
 BEGIN    
 
-	INSERT INTO _ncg_isodist (gid, max_cost, geom) (
+	INSERT INTO _ncg_isodist (fish_id, road_id, max_cost, geom) (
 	SELECT 
-	id,	
+	_fish_id,	
+	_road_id,
 	500, 
 	ST_ConcaveHull(ST_Collect(geom), 0.75) As geom
-	FROM test_function_dist as d
+	FROM _test_dublin_driving_distance as d
 	WHERE cost < 500
-	AND d.road_id = id);
+	AND d.fish_id = _fish_id
+	AND d.road_id = _road_id);
 
-	INSERT INTO _ncg_isodist (gid, max_cost, geom) (
+	INSERT INTO _ncg_isodist (fish_id, road_id, max_cost, geom) (
 	SELECT 
-	id,	
+	_fish_id,	
+	_road_id,
 	750, 
 	ST_ConcaveHull(ST_Collect(geom), 0.75) As geom
-	FROM test_function_dist as d
+	FROM _test_dublin_driving_distance as d
 	WHERE cost < 750
-	AND d.road_id = id);
+	AND d.fish_id = _fish_id
+	AND d.road_id = _road_id);
 
-	INSERT INTO _ncg_isodist (gid, max_cost, geom) (
+	INSERT INTO _ncg_isodist (fish_id, road_id, max_cost, geom) (
 	SELECT 
-	id,	
+	_fish_id,	
+	_road_id,
 	1000, 
 	ST_ConcaveHull(ST_Collect(geom), 0.75) As geom
-	FROM test_function_dist as d
+	FROM _test_dublin_driving_distance as d
 	WHERE cost < 1000
-	AND d.road_id = id);
+	AND d.fish_id = _fish_id
+	AND d.road_id = _road_id);
 
   END;
 $$ LANGUAGE plpgsql;
@@ -130,10 +137,25 @@ testing query
 -- test code for one ID using a 1km network distance
 -- 34051 is the sample road/cell used in images
 /*
-SELECT * FROM _ncg_isodist(34051);
+DROP TABLE _ncg_isodist;
+CREATE TABLE _ncg_isodist (fish_id integer, road_id integer, max_cost double precision);
+SELECT AddGeometryColumn('_ncg_isodist','geom',900913,'POLYGON',2);
+SELECT * FROM _ncg_isodist(1450, 34051);
 */
 
 /*
 -- test using one column of data
-SELECT _ncg_isodist(t.road_id) FROM test_function_dist as t;
+DROP TABLE _test_dublin_driving_distance;
+CREATE TABLE _test_dublin_driving_distance AS
+SELECT  (t2.table_dist).fish_id,
+	    (t2.table_dist).road_id,
+        (t2.table_dist).cost,
+        (t2.table_dist).geom
+FROM (SELECT _ncg_driving_distance(t.road_id, 2000.0) as table_dist
+     FROM _fishnet_road_source_test t ) t2;
+
+CREATE UNIQUE INDEX idx_dublin_driving_distance ON dublin_driving_distance (gid);
+CREATE INDEX idx_spatial_dublin_driving_distance ON dublin_driving_distance USING gist (geom);
+
+
 */
