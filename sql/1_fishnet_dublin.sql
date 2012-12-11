@@ -44,16 +44,8 @@ CREATE INDEX idx_spatial_fishnet_centroid ON _fishnet_centroid USING gist (geom)
 
 
 -- find road segment closest to each fishnet point
-/* (considering php query to find road closest to addres)
-SELECT source
-	 		FROM dublin_traffic
-	 		WHERE ST_DWithin(ST_Transform(st_setsrid(st_makepoint($y1, $x1),4326), 900913), geom, 100.0) 
-			ORDER BY geom <-> ST_Transform(st_setsrid(st_makepoint($y1, $x1),4326), 900913)
-			LIMIT 1;
-*/
-
-DROP TABLE _test_distances;
-CREATE TABLE _test_distances AS 
+DROP TABLE _fishnet_distances;
+CREATE TABLE _fishnet_distances AS 
 
 	WITH tmp_distances as (
 	SELECT
@@ -89,10 +81,11 @@ CREATE TABLE _test_distances AS
 DROP TABLE _fishnet_road_source;
 CREATE TABLE _fishnet_road_source as
 SELECT 
-	f.*,
+	f.gid as fish_id,
+	f.geom as geom,
 	t.road_id
 FROM 
-	_test_distances as t
+	_fishnet_distances as t
 LEFT OUTER JOIN 
 	_fishnet_dublin as f
 ON t.gid = f.gid;

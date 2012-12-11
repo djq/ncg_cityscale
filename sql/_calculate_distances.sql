@@ -58,13 +58,5 @@ SELECT * FROM _ncg_driving_distance(4052, 1000.0);
 */
 
 -- testing using a column of IDs is more complicated
-/*
-DROP TABLE test_function_dist;
-CREATE TABLE test_function_dist AS
-SELECT (t2.table_dist).road_id,
-       (t2.table_dist).cost,
-       (t2.table_dist).geom,
-FROM (SELECT _ncg_driving_distance(t.road_id, 1000.0) as table_dist
-     FROM _fishnet_road_source t ) t2;
-*/
+
 

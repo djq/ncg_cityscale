@@ -109,8 +109,7 @@ BEGIN
 	750, 
 	ST_ConcaveHull(ST_Collect(geom), 0.75) As geom
 	FROM test_function_dist as d
-	WHERE cost > 500
-	AND   cost <= 750
+	WHERE cost < 750
 	AND d.road_id = id);
 
 	INSERT INTO _ncg_isodist (gid, max_cost, geom) (
@@ -119,8 +118,7 @@ BEGIN
 	1000, 
 	ST_ConcaveHull(ST_Collect(geom), 0.75) As geom
 	FROM test_function_dist as d
-	WHERE cost > 750
-	AND   cost <= 1000
+	WHERE cost < 1000
 	AND d.road_id = id);
 
   END;
@@ -130,12 +128,12 @@ $$ LANGUAGE plpgsql;
 testing query
 *************/
 -- test code for one ID using a 1km network distance
--- this is the sample road/cell
+-- 34051 is the sample road/cell used in images
 /*
 SELECT * FROM _ncg_isodist(34051);
 */
 
 /*
+-- test using one column of data
 SELECT _ncg_isodist(t.road_id) FROM test_function_dist as t;
-
 */
