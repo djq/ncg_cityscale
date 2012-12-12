@@ -62,8 +62,8 @@ SELECT * FROM _ncg_driving_distance(4052, 1000.0);
 
 -- testing using a column of IDs is more complicated
 /*
-DROP TABLE _test_dublin_driving_distance;
-CREATE TABLE _test_dublin_driving_distance AS
+DROP TABLE dublin_driving_distance;
+CREATE TABLE dublin_driving_distance AS
 SELECT  (t2.table_dist).fish_id,
         (t2.table_dist).road_id,
         (t2.table_dist).cost,

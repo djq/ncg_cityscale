@@ -12,7 +12,7 @@ INSERT INTO home_isodist (max_cost, geom) (
 /***************
 drop definitions
 ***************/
-DROP TABLE _ncg_isodist;
+DROP TABLE _ncg_isodist_dublin;
 DROP FUNCTION _ncg_isodist(integer, integer);
 DROP TYPE _ncg_isodist_table;
 
@@ -20,8 +20,8 @@ DROP TYPE _ncg_isodist_table;
 table definition
 ***************/
 -- create table to store results (I think?)
-CREATE TABLE _ncg_isodist (fish_id integer, road_id integer, max_cost double precision);
-SELECT AddGeometryColumn('_ncg_isodist','geom',900913,'POLYGON',2);
+CREATE TABLE _ncg_isodist_dublin (fish_id integer, road_id integer, max_cost double precision);
+SELECT AddGeometryColumn('_ncg_isodist_dublin','geom',900913,'POLYGON',2);
 
 -- create object type for _ncg_driving_distance
 CREATE TYPE _ncg_isodist_table AS (
@@ -39,83 +39,96 @@ CREATE OR REPLACE FUNCTION _ncg_isodist(
 	)
 RETURNS VOID AS $$ 
 BEGIN    
+	BEGIN
+		INSERT INTO _ncg_isodist_dublin (fish_id, road_id, max_cost, geom) (
+		SELECT 
+		_fish_id,	
+		_road_id,
+		500, 
+		ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
+		FROM dublin_driving_distance as d
+		WHERE cost < 500
+		AND d.fish_id = _fish_id
+		AND d.road_id = _road_id);
+	END;
 
-	INSERT INTO _ncg_isodist (fish_id, road_id, max_cost, geom) (
-	SELECT 
-	_fish_id,	
-	_road_id,
-	500, 
-	ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
-	FROM _test_dublin_driving_distance as d
-	WHERE cost < 500
-	AND d.fish_id = _fish_id
-	AND d.road_id = _road_id);
+	BEGIN
+		INSERT INTO _ncg_isodist_dublin (fish_id, road_id, max_cost, geom) (
+		SELECT 
+		_fish_id,	
+		_road_id,
+		750, 
+		ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
+		FROM dublin_driving_distance as d
+		WHERE cost < 750
+		AND d.fish_id = _fish_id
+		AND d.road_id = _road_id);
+	END;
 
-	INSERT INTO _ncg_isodist (fish_id, road_id, max_cost, geom) (
-	SELECT 
-	_fish_id,	
-	_road_id,
-	750, 
-	ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
-	FROM _test_dublin_driving_distance as d
-	WHERE cost < 750
-	AND d.fish_id = _fish_id
-	AND d.road_id = _road_id);
+	BEGIN
+		INSERT INTO _ncg_isodist_dublin (fish_id, road_id, max_cost, geom) (
+		SELECT 
+		_fish_id,	
+		_road_id,
+		1000, 
+		ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
+		FROM dublin_driving_distance as d
+		WHERE cost < 1000
+		AND d.fish_id = _fish_id
+		AND d.road_id = _road_id);
+	END;
 
-	INSERT INTO _ncg_isodist (fish_id, road_id, max_cost, geom) (
-	SELECT 
-	_fish_id,	
-	_road_id,
-	1000, 
-	ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
-	FROM _test_dublin_driving_distance as d
-	WHERE cost < 1000
-	AND d.fish_id = _fish_id
-	AND d.road_id = _road_id);
+	BEGIN
+		INSERT INTO _ncg_isodist_dublin (fish_id, road_id, max_cost, geom) (
+		SELECT 
+		_fish_id,	
+		_road_id,
+		1250, 
+		ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
+		FROM dublin_driving_distance as d
+		WHERE cost < 1250
+		AND d.fish_id = _fish_id
+		AND d.road_id = _road_id);
+	END;
 
-	INSERT INTO _ncg_isodist (fish_id, road_id, max_cost, geom) (
-	SELECT 
-	_fish_id,	
-	_road_id,
-	1250, 
-	ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
-	FROM _test_dublin_driving_distance as d
-	WHERE cost < 1250
-	AND d.fish_id = _fish_id
-	AND d.road_id = _road_id);
+	BEGIN
+		INSERT INTO _ncg_isodist_dublin (fish_id, road_id, max_cost, geom) (
+		SELECT 
+		_fish_id,	
+		_road_id,
+		1500, 
+		ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
+		FROM dublin_driving_distance as d
+		WHERE cost < 1500
+		AND d.fish_id = _fish_id
+		AND d.road_id = _road_id);
+	END;
 
-	INSERT INTO _ncg_isodist (fish_id, road_id, max_cost, geom) (
-	SELECT 
-	_fish_id,	
-	_road_id,
-	1500, 
-	ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
-	FROM _test_dublin_driving_distance as d
-	WHERE cost < 1500
-	AND d.fish_id = _fish_id
-	AND d.road_id = _road_id);
+	BEGIN
+		INSERT INTO _ncg_isodist_dublin (fish_id, road_id, max_cost, geom) (
+		SELECT 
+		_fish_id,	
+		_road_id,
+		1750, 
+		ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
+		FROM dublin_driving_distance as d
+		WHERE cost < 1750
+		AND d.fish_id = _fish_id
+		AND d.road_id = _road_id);
+	END;
 
-	INSERT INTO _ncg_isodist (fish_id, road_id, max_cost, geom) (
-	SELECT 
-	_fish_id,	
-	_road_id,
-	1750, 
-	ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
-	FROM _test_dublin_driving_distance as d
-	WHERE cost < 1750
-	AND d.fish_id = _fish_id
-	AND d.road_id = _road_id);
-
-	INSERT INTO _ncg_isodist (fish_id, road_id, max_cost, geom) (
-	SELECT 
-	_fish_id,	
-	_road_id,
-	2000, 
-	ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
-	FROM _test_dublin_driving_distance as d
-	WHERE cost <= 2000
-	AND d.fish_id = _fish_id
-	AND d.road_id = _road_id);
+	BEGIN
+		INSERT INTO _ncg_isodist_dublin (fish_id, road_id, max_cost, geom) (
+		SELECT 
+		_fish_id,	
+		_road_id,
+		2000, 
+		ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
+		FROM dublin_driving_distance as d
+		WHERE cost <= 2000
+		AND d.fish_id = _fish_id
+		AND d.road_id = _road_id);
+	END;
 
   END;
 $$ LANGUAGE plpgsql;
