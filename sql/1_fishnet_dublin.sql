@@ -21,13 +21,13 @@ y: 7169086 - 6956099
 DROP TABLE _fishnet_dublin;
 CREATE TABLE _fishnet_dublin as
 SELECT 
-	generate_series(1,25560) as gid, -- max value is nrows * ncols
+	generate_series(1,25560) as fish_id, -- max value is nrows * ncols
 	ST_SetSRID(ST_CreateFishnet(213, 120, 1000, 1000, -788694, 6956099), 900913) AS geom;
 	-- using temporary values for testing
 	--generate_series(1,2500) as gid, -- max value is nrows * ncols
 	--ST_SetSRID(ST_CreateFishnet(50, 50, 1000, 1000, -788694, 6956099), 900913) AS geom;
 
-CREATE UNIQUE INDEX idx_test_fishnet ON _fishnet_dublin (gid);
+CREATE UNIQUE INDEX idx_test_fishnet ON _fishnet_dublin (fish_id);
 CREATE INDEX idx_spatial_test_fishnet ON _fishnet_dublin USING gist (geom);
 
 
@@ -35,21 +35,21 @@ CREATE INDEX idx_spatial_test_fishnet ON _fishnet_dublin USING gist (geom);
 DROP TABLE _fishnet_centroid;
 CREATE TABLE _fishnet_centroid AS 
 SELECT 
-	f.gid,
+	f.fish_id,
 	ST_Centroid(f.geom) as geom	
 FROM _fishnet_dublin as f;
 
-CREATE UNIQUE INDEX idx_fishnet_centroid ON _fishnet_centroid (gid);
+CREATE UNIQUE INDEX idx_fishnet_centroid ON _fishnet_centroid (fish_id);
 CREATE INDEX idx_spatial_fishnet_centroid ON _fishnet_centroid USING gist (geom);
 
 
 -- find road segment closest to each fishnet point
-DROP TABLE _fishnet_distances;
+--DROP TABLE _fishnet_distances;
 CREATE TABLE _fishnet_distances AS 
 
 	WITH tmp_distances as (
 	SELECT
-		f.gid as gid,	
+		f.fish_id,	
 		d.geom,
 		d.source as road_id,
 		st_distance(ST_Centroid(d.geom), f.geom) as distance
@@ -63,34 +63,36 @@ CREATE TABLE _fishnet_distances AS
 	-- now from table _test_distances get minimum distance
 	min_distances as (
 	SELECT
-		gid,	
+		fish_id,	
 		MIN(distance) as distance
 	FROM tmp_distances
-	GROUP BY gid)
+	GROUP BY fish_id)
 
 	-- join tmp_distances and min_distances
 	SELECT
-		t.*
+		t.fish_id,
+		t.geom,
+		t.road_id
 	FROM min_distances as m	
 	LEFT OUTER JOIN tmp_distances as t	
-	ON m.gid = t.gid 
+	ON m.fish_id = t.fish_id 
 	and m.distance = t.distance;
-	CREATE INDEX idx_spatial_test_distances ON _test_distances USING gist (geom);
+	--CREATE INDEX idx_spatial_test_distances ON _test_distances USING gist (geom);
 
 -- join fishnet centroid gid and nearest road to original fishnet polygon table
 DROP TABLE _fishnet_road_source;
 CREATE TABLE _fishnet_road_source as
 SELECT 
-	f.gid as fish_id,
+	f.fish_id,
 	f.geom as geom,
 	t.road_id
 FROM 
 	_fishnet_distances as t
 LEFT OUTER JOIN 
 	_fishnet_dublin as f
-ON t.gid = f.gid;
+ON t.fish_id = f.fish_id;
 
---CREATE UNIQUE INDEX idx_fishnet_road_source ON _fishnet_road_source (gid);
+CREATE INDEX idx_fishnet_road_source ON _fishnet_road_source (fish_id);
 CREATE INDEX idx_spatial_fishnet_road_source ON _fishnet_road_source USING gist (geom);
 
 

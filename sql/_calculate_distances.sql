@@ -69,6 +69,6 @@ SELECT  (t2.table_dist).fish_id,
         (t2.table_dist).cost,
         (t2.table_dist).geom
 FROM (SELECT _ncg_driving_distance(t.fish_id, t.road_id, 2000.0) as table_dist
-     FROM _fishnet_road_source_test t ) t2;
+     FROM _fishnet_road_source_test as t ) t2;
 */
 

@@ -82,28 +82,28 @@ INSERT INTO home_isodist (max_cost, geom) (
 INSERT INTO home_isodist (max_cost, geom) (
   SELECT 
     500, 
-    ST_ConcaveHull(ST_Collect(geom), 0.75) As geom
+    ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
   FROM tmp_cost 
   WHERE cost < 500);
 
 INSERT INTO home_isodist (max_cost, geom) (
   SELECT 
     1000, 
-    ST_ConcaveHull(ST_Collect(geom), 0.75) As geom
+    ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
   FROM tmp_cost 
   WHERE cost < 1000);
 
   INSERT INTO home_isodist (max_cost, geom) (
   SELECT 
     1500, 
-    ST_ConcaveHull(ST_Collect(geom), 0.75) As geom
+    ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
   FROM tmp_cost 
   WHERE cost < 1500);
 
   INSERT INTO home_isodist (max_cost, geom) (
   SELECT 
     2000, 
-    ST_ConcaveHull(ST_Collect(geom), 0.75) As geom
+    ST_ConcaveHull(ST_Collect(geom), 0.85) As geom
   FROM tmp_cost 
   WHERE cost < 2000);
 

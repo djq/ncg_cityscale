@@ -92,8 +92,8 @@ LEFT OUTER JOIN
 	_fishnet_dublin_test as f
 ON t.fish_id = f.fish_id;
 
---CREATE UNIQUE INDEX idx_fishnet_road_source ON _fishnet_road_source (gid);
-CREATE INDEX idx_spatial_fishnet_road_source_test ON _fishnet_road_source_test USING gist (geom);
+--CREATE UNIQUE INDEX idx_fishnet_road_source ON _fishnet_road_source (fish_id);
+--CREATE INDEX idx_spatial_fishnet_road_source_test ON _fishnet_road_source_test USING gist (geom);
 
 
 
