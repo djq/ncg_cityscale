@@ -27,3 +27,10 @@ FROM (SELECT _ncg_isodist(t.fish_id, t.road_id) as table_dist
 
 CREATE INDEX idx_dublin_driving_distance ON _ncg_isodist (fish_id);
 CREATE INDEX idx_spatial_ncg_isodist ON _ncg_isodist USING gist (geom);
+
+
+
+-- then run a query to make sure only distinct values are considered:
+CREATE TABLE _ncg_isodist_dublin_tmp as
+SELECT DISTINCT *
+FROM _ncg_isodist_dublin
