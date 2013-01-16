@@ -8,59 +8,31 @@
 <head>
   <meta charset="utf-8" />
 
-  <!-- Set the viewport width to device width for mobile -->
-  <meta name="viewport" content="width=device-width" />
+  <!-- Set the viewport width to device width for mobile --> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
   <title>cityscale</title>
 
-  <!-- Included CSS Files (Uncompressed) -->
-
-  <link rel="stylesheet" href="stylesheets/foundation.css">
-
-  
-  <!-- Included CSS Files (Compressed) -->
-    <!--
-  <link rel="stylesheet" href="stylesheets/foundation.min.css">
-    -->
-  <link rel="stylesheet" href="stylesheets/app.css">
-
-  <script src="javascripts/modernizr.foundation.js"></script>
+    <!--foundation -->
+    <!-- Included CSS Files (Uncompressed) -->
+    <link rel="stylesheet" href="stylesheets/foundation.css">
+    
+    <!-- Included CSS Files (Compressed) -->
+      <!--
+    <link rel="stylesheet" href="stylesheets/foundation.min.css">
+      -->
+    <link rel="stylesheet" href="stylesheets/app.css">
+    <script src="javascripts/modernizr.foundation.js"></script>
 
 
-    <!-- ########################## LIBRARIES ########################## -->
-    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script><!-- google: basemap-->        
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script type="text/javascript" src="lib/raphael.js"></script>          <!-- Raphael  -->
-    <script type="text/javascript" src="lib/highcharts.js"></script>       <!-- highcharts  -->     
-    <script type="text/javascript" src="lib/OpenLayers.debug.js"></script> <!-- OpenLayers  -->    
-    <script type="text/javascript" src="lib/proj4js-combined.js"></script> <!-- proj4  -->
-    <script type="text/javascript" src="lib/spin.js"></script>             <!-- spin: http://fgnass.github.com/spin.js/ -->
-    <script type="text/javascript" src="lib/stamen.js"></script>           <!-- stamen maps -->
-    <script type="text/javascript" src="lib/simple-slider.js"></script>    <!-- slider -->
-        
-    <!-- ########################## General Scripts ########################## -->
-    <script type="text/javascript" src="js/openlayersSettings.js"></script>       <!-- Openlayers styles  -->   
-    <script type="text/javascript" src="js/routing_createMap.js"></script>        <!-- Make map controls  -->   
-    <script type="text/javascript" src="js/routing_mapControls.js"></script>      <!-- Make map controls  -->           
-    <script type="text/javascript" src="js/routing_makeInterface.js"></script>    <!-- Make raphael interface  -->  
-
-    <!-- ########################## NCG Visualization ########################## -->              
-    <script type="text/javascript" src="js/query.js"></script>          <!-- prepare and run queries  -->                 
-    <script type="text/javascript" src="js/generateReport.js"></script> <!-- report generation --> 
-    <script type="text/javascript" src="js/animate.js"></script>        <!-- make dynamic --> 
-
-    <!-- ########################## CSS STYLE ########################## -->            
-    <link rel="stylesheet" href="css/routing.css" type="text/css">  
-    <link rel="stylesheet" href="css/simple-slider.css" type="text/css"> 
-    <link rel="stylesheet" href="css/simple-slider-volume.css" type="text/css">          
-    <link rel="icon" type="image/ico" href="favicon.ico" >
 
 
 </head>
 <body>
 
   <!-- Header and Nav -->
-
   <nav class="top-bar">
     <ul>
       <!-- Title Area -->
@@ -168,7 +140,24 @@
   
   </li>
   <li id="simple2Tab">
-    <div id="basicMap"></div> 
+    <div class="twelve columns">
+      <div id="map" >
+      </div>
+    </div> 
+
+    <!-- Sidebar controls -->
+    <div id="sidebar" >
+
+  
+        
+    </div>  
+
+    <!-- Report output box -->
+    <div id="report" class="grayBg rep">        
+      <div id="report-text" clas="rep"></div>   
+    </div>  
+
+
   </li> 
 </ul>
 
@@ -194,8 +183,8 @@
 
   <!-- Included JS Files (Uncompressed) -->
   
+   <script src="javascripts/jquery.js"></script>
   
-  <script src="javascripts/jquery.js"></script>
   
   <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
   
@@ -237,5 +226,7 @@
 
   <!-- Initialize JS Plugins -->
   <script src="javascripts/app.js"></script>
+
+
 </body>
 </html>

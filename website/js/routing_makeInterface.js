@@ -23,9 +23,9 @@ function makeInterface() {
 	$("[data-slider]")
     .each(function () {
       var input = $(this);
-      $("<span>")
+      /*$("<span>")
         .addClass("output")
-        .insertAfter($(this));
+        .insertAfter($(this));*/
     })
     .bind("slider:ready slider:changed", function (event, data) {
       $(this)

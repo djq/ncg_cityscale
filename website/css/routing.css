@@ -1,249 +1,63 @@
-/**************/
-/* Font stuff */
-/**************/
-body {
-	font-family:Arial, Helvetica, sans-serif;
-	font-size:13px;
-	color: white;
-	padding:0;
-	margin:0;
-	width:100%;	
-	height:100%;
+div.olControlZoom {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 4px;
+    padding: 2px;
 }
-
-table, td {
-    background-color: white;
-    border: 2px solid red;
-    border-collapse: collapse; 
-    padding: 0px;
-}
-
-td {
-    width: 30px;  
-    height: 30px;
-}
-.highlightedTop{
-    border-top: 2px solid black;
-}
-.highlightedBottom{
-    border-bottom: 2px solid black;
-}
-.highlighted {
-    border-left:  2px solid black;
-    border-right: 2px solid black;
-}
-.highlightedPrev {
-    border-right: 2px solid black;
-}
-
-.arrow {
-    position: relative;
-    top:-18px;
-    width: 0; 
-    height: 0; 
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;    
-    border-top: 15px solid black;
-}
-
-.x{
-    border: 2px solid red;    
-    /*background-color: red; */
-}
-
-
-/*****************/
-/* Div Positions */
-/*****************/
-/* Big picture */
-#basicMap{	position:absolute; top:0; 	 	left:0; 	width:100%;  	height: 100%;}
-
-/* Gray and transparent div background color*/
-.grayBg{position:absolute; top:0px; left:0px; width:100%; height:100%; background-color:black; filter:alpha(opacity = 85); opacity:0.85; z-index:-1;}
-
-/* side bar */
-#sidebar{	
-    position:absolute; 
-    top:20px;   
-    left:20px; 	
-    width:200px; 
-    overflow:visible; 
-    z-index:1;
-}
-
-/* map controls pan zoom */	
-#controls{ 		
-    position:relative; 
-    top: -50px;
-    left:30px; 
-    width:160px;  
-    height: 40px;
-}
-
-#controls-bg{ 	
-    position:relative; 
-    left:0px; 
-    top:0px; 
-    width:200px;  
-    height: 60px;	
-    background-color:black; 
-    opacity:0.85; 
-    filter: alpha(opacity=85);
-}
-
-#user_address{  
-    position:relative; 
-    width:200px; 
-    height:115px; 
-    top: -20px;
-    margin-top:0px; 
-    font-size:18px; 
-    text-align: center; 
-    padding-top:5px; 
-}
-
-#timer_div{
-    position:relative; 
-    left:10px; 
-    top:10px; 
-    font-size:25px;
-}
-
-#spinner{   
-    position:relative; 
-    float:right; 
-    margin: 5px;
-    width:30px; 
-    height:30px;
-}
-
-
-#sideSet2{	position:relative; width:100%; height:30px; margin-top:0px;}
-
-.text{	width:160px;color: black;font-size:10px;} 
-#address_start{position:absolute; top:30px; left:25px;}
-#address_end{position:absolute; top:55px;left:25px;}
-.circle {
-	position:absolute; 
-	margin-left: 5px;
-  	border-radius: 50%;
-  	width: 20px;
-  	height: 20px;    
-}
-#circle_start{
-    background-color:green;
-    top:30px; }
-#circle_end{
-    background-color:red;
-    top:55px;
-}
-
-.input_button {
-	margin-top:55px;
-	margin-left:0px;
-	-moz-box-shadow:inset 1px -50px 0px -50px #ffffff;
-	-webkit-box-shadow:inset 1px -50px 0px -50px #ffffff;
-	box-shadow:inset 1px -50px 0px -50px #ffffff;
-	background-color:#302b30;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:6px;
-	border:1px solid #ffffff;
-	display:inline-block;
-	color:#ffffff;
-	font-family:arial;
-	font-size:19px;
-	font-weight:normal;
-	padding:-2px 30px;
-	text-decoration:none;
-}.input_button:hover {
-	background-color:gray;
-}.input_button:active {
-	position:relative;
-	top:1px;
-}
-
-#timer_slider{  position:relative; width:100%;  height:50px; margin-top:5px;}
-#start_time{
-    margin-left: 7px;
-    margin-top: 15px;
-}
-#slider1{
-    position: relative;
-    padding-top: 13px;
-    margin-left: 45px;
-    }
-#timer{         position:relative; width:100%;  height:50px; margin-top:0px;}
-#sideOut{		position:relative; width:100%;	height:40px; margin-top:15px;}
-
-
-/* report box */
-.rep{}
-#report{ position:absolute; top:10%; left:50%; width:200px; height:65px; margin-left:-100px; z-index:1;}
-#report-text{ position:absolute; top:10%; left:50%; width:200px; height:55px; margin-left:-100px; margin-top: 4px; text-align:center; z-index:100;}
-
-
-.col_template{ font-size:12px; padding-top:4px; padding-left:4px;}
-
-/* chart class */
-.chart{position:absolute; right:20px; width:200px; height: 325px; background-color:black; opacity:0.85; filter: alpha(opacity=85);}
-	
-/* chart positions */	
-#chart-1{top:20px; }
-
-	
-a {color: #3BB9FF}  /* maybe change this as it's not visible over light coloured maps; was this: #3BB9FF */
-a:link{text-decoration: none}
-a:hover{text-decoration: underline}
-
-
-/* experimenting with table highlighting */
 * {
- box-sizing: border-box;   
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+div.olControlZoom a {
+    display: block;
+    margin: 1px;
+    padding: 0;
+    color: white;
+    font-size: 28px;
+    font-family: sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    height: 32px;
+    width: 32px;
+    line-height: 28px;
+    text-shadow: 0 0 3px rgba(0,0,0,0.8);
+    background: #130085; /* fallback for IE - IE6 requires background shorthand*/
+    background: rgba(0, 60, 136, 0.5);
+    filter: alpha(opacity=80);
+}
+a.olControlZoomIn {
+    border-radius: 4px 4px 0 0;
+}
+a.olControlZoomOut {
+    border-radius: 0 0 4px 4px;
+}
+div.olControlZoom a:hover {
+    background: #130085; /* fallback for IE */
+    background: rgba(0, 60, 136, 0.7);
+    filter: alpha(opacity=100);
+}
+@media only screen and (max-width: 600px) {
+    div.olControlZoom a:hover {
+        background: rgba(0, 60, 136, 0.5);
+    }
+}
+.olLayerGrid .olTileImage {
+    -webkit-transition: opacity 0.2s linear;
+    -moz-transition: opacity 0.2s linear;
+    -o-transition: opacity 0.2s linear;
+    transition: opacity 0.2s linear;
+}
+/* Enable 3d acceleration when operating on tiles, this is
+   known to yield better performance on IOS Safari.
+   http://osgeo-org.1803224.n2.nabble.com/Harware-accelerated-CSS3-animations-for-iOS-td6255560.html
 
-table, td {
-    background-color: white;   
-    border: 0px solid white;
-    border-collapse: collapse;   
+   It also prevents tile blinking effects in iOS 5.
+   See https://github.com/openlayers/openlayers/issues/511
+*/
+@media (-webkit-transform-3d) {
+img.olTileImage {
+    -webkit-transform: translate3d(0, 0, 0);
 }
-
-td {
-    width: 40px;  
-    height: 40px;
 }
-
-.a{
-    background-color: red;
-    border: 1px solid red;
-}
-.b{
-    background-color: green;
-    border: 1px solid green;
-}
-.c{
-    background-color: orange;
-    border: 1px solid orange;
-}
-
-.highlightedTop{
-    border-top: 2px solid black;
-}
-.highlightedBottom{
-    border-bottom: 2px solid black;
-}
-.highlightedPrev {
-    border-right: 2px solid black;
-}
-.highlighted {
-    border-left:  2px solid black;
-    border-right: 2px solid black;
-    width: 20px;
-    height: 20px;
-}
-​
-
-
-​
-
-

@@ -1,6 +1,6 @@
 var start_point, end_point;
 var x1, y1, x2,y2, _x, _y;
-var lineLayer, routingLayer, pointStart, start, pointEnd, end;
+var lineLayer, ayerayer, pointStart, start, pointEnd, end;
 var geocoder;
 var tmp_global = 0;	
 var routeDemand = false;	
@@ -36,38 +36,33 @@ initialize = function (){
 		
 		// Create map controls	
 		createMap();			// Main map		
-		mapControls();			// Map controls 
-		makeInterface();		// Interface			
-		tableHover();		
-
+		//mapControls();			// Map controls 
+		//makeInterface();		// Interface			
+		//tableHover();		
 		
 		$('#report').hide();					
-		geocoder = new google.maps.Geocoder();	// google function (limit of 15000 per day) but also rate-limited     	
+		geocoder = new google.maps.Geocoder();	// google function (limit of 15000 per day) but also rate-limited per time           
         
-        /*
-        // Handle user input 
-			// handle pressing enter key
-			   $(".text").keyup(function(event){
-				   if(event.keyCode == 13){
-					   codeAddress();		
-				   }
-			   }); 	   
-					   
-			// clear box on focus		
-			$('.text').focus(function() {				
-					$(this).val('')
-						}).blur(function() {
-					if (this.value == "") {
-						$(this).val(this.title);
-					}
-					}); 		
+        // Handle user input from keyboard
+		$(".text").keyup(function(event){
+		   if(event.keyCode == 13){
+			   codeAddress();		
+		   }
+	   }); 	   
+				   
+		// clear box on focus		
+		$('.text').focus(function() {				
+			$(this).val('')
+				}).blur(function() {
+			if (this.value == "") {
+				$(this).val(this.title);
+			}
+		}); 		
 
-				// when text is updated, re-geocode and re-route
-				$('.text').blur(function() {					
-							codeAddress();									
-					})		
-
-		*/		
+		// when text is updated, re-geocode and re-route
+		/*$('.text').blur(function() {					
+			codeAddress();									
+		})		*/	
 			
 }
 
@@ -193,8 +188,8 @@ createMap = function (){
 			projection: proj_900913,
 			units: "m",
 			numZoomLevels: 20,
-			maxResolution: 15654.0339,
-			maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
+			//maxResolution: 15654.0339,
+			//maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
 			displayProjection: proj_900913,			
 			controls: [		//remove controls from the screen
 				new OpenLayers.Control.Navigation(),
@@ -204,54 +199,7 @@ createMap = function (){
 		};		
 					
 		//map = new OpenLayers.Map("basicMap", options);
-		map = new OpenLayers.Map("basicMap", options2);
-
-
-		// experimenting with WMS
-		/*
-		t1 = new OpenLayers.Layer.WMS( 
-			"dublin roads",
-			"http://ncg.urbmet.com/mapserv.cgi?map=../../mapfiles/demo.map", 
-			{layers: 't1', transparent:true},
-			{isBaseLayer:false, singleTile:true, ratio:1}
-	    );
-
-	    t2 = new OpenLayers.Layer.WMS( 
-			"dublin roads",
-			"http://ncg.urbmet.com/mapserv.cgi?map=../../mapfiles/demo.map", 
-			{layers: 't2', transparent:true},
-			{isBaseLayer:false, singleTile:true, ratio:1}
-	    );
-
-	     t3 = new OpenLayers.Layer.WMS( 
-			"dublin roads",
-			"http://ncg.urbmet.com/mapserv.cgi?map=../../mapfiles/demo.map", 
-			{layers: 't3', transparent:true},
-			{isBaseLayer:false, singleTile:true, ratio:1}
-	    );
-
-	    t4 = new OpenLayers.Layer.WMS( 
-			"dublin roads",
-			"http://ncg.urbmet.com/mapserv.cgi?map=../../mapfiles/demo.map", 
-			{layers: 't4', transparent:true},
-			{isBaseLayer:false, singleTile:true, ratio:1}
-	    );
-
-	    t5 = new OpenLayers.Layer.WMS( 
-			"dublin roads",
-			"http://ncg.urbmet.com/mapserv.cgi?map=../../mapfiles/demo.map", 
-			{layers: 't5', transparent:true},
-			{isBaseLayer:false, singleTile:true, ratio:1}
-	    );
-
-	    map.addLayers([t1, t2, t3, t4, t5]);	
-	    
-		t1.setVisibility(false)
-		t2.setVisibility(false)
-		t3.setVisibility(false)
-		t4.setVisibility(false)
-		t5.setVisibility(false)
-		*/
+		map = new OpenLayers.Map("basicMap", options);
 
 		// Use OSM
 		osm = new OpenLayers.Layer.OSM();			
@@ -271,24 +219,24 @@ createMap = function (){
 		routingLayer = new OpenLayers.Layer.Vector("routingLayer", {styleMap:routing_style});		// from prouting using start/end		
 		pointStart = new OpenLayers.Layer.Vector("start", {styleMap:startPoint});	
 		pointEnd = new OpenLayers.Layer.Vector("end", {styleMap:endPoint});	        
-
 		map.addLayers([currentLayer, oldLayer, returnLayer, oldReturnLayer, routingLayer, pointStart, pointEnd]);	
+
+		r1 = new OpenLayers.Layer.Vector("r1", {styleMap:routing_style});		// routing layers
+		r2 = new OpenLayers.Layer.Vector("r2", {styleMap:routing_style});	
+		r3 = new OpenLayers.Layer.Vector("r3", {styleMap:routing_style});	
+		r4 = new OpenLayers.Layer.Vector("r4", {styleMap:routing_style});
+		r5 = new OpenLayers.Layer.Vector("r5", {styleMap:routing_style});	
+		r6 = new OpenLayers.Layer.Vector("r6", {styleMap:routing_style});		
+
+		map.addLayers([r1, r2, r3, r4, r5, r6]);	
 		centerMap()		// center map on Ireland
 
-		/*
-		coords = new OpenLayers.Control.MousePosition()	// view mouse position (mainly for debugging)
-		map.addControl(coords);		
-		
-		map.events.register("mousemove", map, function(e) { 
-                //var position = this.events.getMousePosition(e);
-                var pixel = new OpenLayers.Pixel(e.xy.x,e.xy.y);
-  				var lonlat = map.getLonLatFromPixel(pixel);
-                console.log(Math.round(lonlat.lon), Math.round(lonlat.lat));
-            });
-
-
-		*/		
-	
+		r1.setVisibility(true);
+		r2.setVisibility(false);	
+		r3.setVisibility(false);	
+		r4.setVisibility(false);	
+		r5.setVisibility(false);	
+		//r6.setVisibility(false);	
 
 	// handle mouse interactions
 	var highlightCtrl = new OpenLayers.Control.SelectFeature(returnLayer, {
@@ -367,11 +315,60 @@ createMap = function (){
 		point.geometry.transform(new OpenLayers.Projection("EPSG:4326"),  map.getProjectionObject())		
 	}
 	
-	map.addControls([dragStart, dragEnd]);	
- 	 	
+	map.addControls([dragStart, dragEnd]);	 	 	
 	dragEnd.activate();
 	dragStart.activate();
-	
+
+//	$("[data-slider]").simpleSlider("setValue", 0); 
+
+	/* handle sliding*/	
+	$("[data-slider]")
+/*	    .bind("slider:ready slider:changed", function (event, data) {	  
+	          var val = data.value.toFixed(0);	  
+	          //$('#slider_output').html(val);        
+	          if(val == 0){	          	
+	          	$('#timer_div').html('TIME: ' + val + ':00' )
+	          	r1.setVisibility(true);
+				r2.setVisibility(false);	
+				r3.setVisibility(false);	
+				r4.setVisibility(false);	
+				r5.setVisibility(false);									
+	          }
+	          if(val == 6){
+	          	$('#timer_div').html('TIME: ' + val + ':00' )
+	          	r1.setVisibility(false);
+				r2.setVisibility(true);	
+				r3.setVisibility(false);	
+				r4.setVisibility(false);	
+				r5.setVisibility(false);							
+	          }	         
+	          if(val == 12){
+	          	$('#timer_div').html('TIME: ' + val + ':00' )
+	          	r1.setVisibility(false);
+				r2.setVisibility(false);	
+				r3.setVisibility(true);	
+				r4.setVisibility(false);	
+				r5.setVisibility(false);								
+	          }
+	          if(val == 18){
+	          	$('#timer_div').html('TIME: ' + val + ':00' )
+	          	r1.setVisibility(false);
+				r2.setVisibility(false);	
+				r3.setVisibility(false);	
+				r4.setVisibility(true);	
+				r5.setVisibility(false);		
+							
+	          }	         
+	          if(val == 24){
+	          	$('#timer_div').html('TIME: ' + val + ':00' )
+	          	r1.setVisibility(false);
+				r2.setVisibility(false);	
+				r3.setVisibility(false);	
+				r4.setVisibility(false);	
+				r5.setVisibility(true);						
+	          }
+	    }); 
+	*/
 }
 
 // center map (currently Dublin is hardcoded)
@@ -383,7 +380,7 @@ centerMap = function () {
 	
 }
 
-getRoute = function(){	
+getRoute = function (){	
 
 	routeDemand = true;
 	r_unique = Math.floor(Math.random()* 100000);
@@ -391,25 +388,30 @@ getRoute = function(){
 	if(routeDemand){
 		$.ajax({ 
 				type: "POST",
-				url: "php/analysis/routing.php",       
+				url: "php/analysis/routing_id.php",       
 				data:{x1: x1, y1:y1, x2: x2, y2:y2, r_id:r_unique, start_ad: $("#address_start").val(), end_ad: $("#address_end").val()}, 
 				async: true,
-				success: function(result){																				
-					clearAll(false);				// get rid of everything, aside from start/end points									
-					qr = result;					// put results in global scope (this should be tidied up)													
-					callTimer(routingLayer);		// run timer							
-					if(routingLayer.features[0] != null){ routingLayer.removeAllFeatures(); }
+				success: function(r){													
+
+					getRoutes(r.r_id, r.start_id, r.end_id, 't2', r2); 					
+					getRoutes(r.r_id, r.start_id, r.end_id, 't3', r3); 
+					getRoutes(r.r_id, r.start_id, r.end_id, 't4', r4);
+					getRoutes(r.r_id, r.start_id, r.end_id, 't5', r5);  
+					//getRoutes(r.r_id, r.start_id, r.end_id, 't6', r6);  					
+
+					clearAll(false);				// get rid of everything, aside from start/end points																										
+					callTimer(r1);		// run timer				
+
+					if(r1.features[0] != null){ r1.removeAllFeatures(); }
 					
-					// draw polygons on screen
-					if(qr.polygons != null){	// process geojson
-						for(i=0;i<qr.polygons.length; i++){		
-								t = [qr.t1[i], qr.t2[i], qr.t3[i], qr.t4[i], qr.t5[i]];					
-								showGeoJson(qr.polygons[i], t, routingLayer);									
+					// draw route on screen
+					if(r.roads != null){	// process geojson
+						for(i=0;i<r.roads.length; i++){		
+								t = [r.t1[i], r.t2[i], r.t3[i], r.t4[i], r.t5[i]];					
+								showGeoJson(r.roads[i], t, r1);									
 						}		
-					}								
-					updateAvgCharts(result);			// Update chart values
-					routingLayer.setVisibility(false);	// hide visibility
-						
+					}													
+					//r1.setVisibility(false);	// hide visibility						
 				}, 
 			dataType:'json'
 			});		
@@ -417,38 +419,28 @@ getRoute = function(){
 
 }
 
-tableHover = function tableHover(){
+getRoutes = function(r_id, start_id, end_id, cost, layer){
 
-$('td').hover(function() {
-		    var t = parseInt($(this).index()) + 1;
-		    $('td:nth-child(' + t + ')').first().addClass('highlightedTop');
-		    $('td:nth-child(' + t + ')').addClass('highlighted');			    
-		    $('td:nth-child(' + t + ')').last().removeClass('highlighted').addClass('x');
-		    $('td:nth-child(' + t + ')').last().append("<div class='arrow'></div>");
+	$.ajax({ 
+		type: "POST",
+		url: "php/analysis/routing_with_id.php",       
+		data:{r_id:r_id, start_id: start_id, end_id: end_id, cost:cost}, 
+		async: true,
+		success: function(r){		
 
-		    if(t>1){
-		        var t1 = t -1;		        
-		        $('td:nth-child(' + t1 + ')').addClass('highlightedPrev');
-		        $('td:nth-child(' + t1 + ')').last().removeClass('highlightedPrev');
-
-		    }
-		},
-		function() {
-		    var t = parseInt($(this).index()) + 1;
-		    $('td:nth-child(' + t + ')').removeClass('highlighted ');
-		    $('td:nth-child(' + t + ')').first().removeClass('highlightedTop');
-		    $('td:nth-child(' + t + ')').last().removeClass('highlightedBottom');
-		    $('td:nth-child(' + t + ')').last().removeClass('x');
-		    //$('td:nth-child(' + t + ')').last().remove("<div class='arrow'></div>")
-		    $('.arrow').remove();
-		        if(t>1){
-		         var t1 = t -1;
-		         $('td:nth-child(' + t1 + ')').removeClass('highlightedPrev');
-		    }
-		});
-
+			if(r.roads != null){	
+						for(i=0;i<r.roads.length; i++){														
+								showGeoJsonRoutes(r.roads[i], layer);									
+						}		
+					}																						
+		
+		}, 
+	dataType:'json'
+	});	
 
 }
+
+
 
 
 

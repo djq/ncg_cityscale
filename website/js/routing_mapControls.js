@@ -83,15 +83,5 @@ function mapControls() {
 		minus.animate([{opacity: 1}, {opacity: 0.5}], 500);
 		map.zoomOut();
 	});
-	
-	// ?
-	/*
-	$("#help-all").hide(); // hide by default
-	r.text(7*sl.B + sl.B/2, sl.B/2 + voffset/2,"?").attr(control_text_options);
-	helpButton = r.rect(7*sl.B, 0 + voffset/2, sl.B, sl.B, sl.R).attr(button_options);
-	helpButton.click(function (event){
-		getHelp();
-	});	
-	*/
-	
+		
 }
