@@ -1,0 +1,130 @@
+/*****************/
+/* Div Positions */
+/*****************/
+
+/**************/
+/* Font stuff */
+/**************/
+body {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	color: white;
+	padding:0;
+	margin:0;
+	width:100%;
+	height:100%;
+}
+
+/* Big picture */
+#basicMap{	position:absolute; top:0; 	 	left:0; 	width:100%;  	height: 100%;}
+
+/* Gray and transparent div background color*/
+.grayBg{position:absolute; top:0px; left:0px; width:100%; height:100%; background-color:black; filter:alpha(opacity = 80); opacity:0.8; z-index:-1;}
+
+/* side bar */
+#sidebar{	position:absolute; top:20px;   left:20px; 	width:200px; overflow:visible; z-index:1;}
+#sideIn{	position:relative; width:100%; height:100px;}
+#spinner{ 	position:relative; float:right; margin: 5px;width:30px; height:30px;}
+
+/* #sideSet1{	position:relative; width:100%; height:35px; margin-top:10px;} */
+#heatMapRadios{ position:absolute; left:10px;	width:170px;  top:40px;  font-size:12px;}
+
+/* map controls pan zoom */	
+#controls{ 		position:relative; top: -30px;left:30px; width:160px;  height: 40px;}
+#controls-bg{ 	position:relative; left:0px; top:20px; width:200px;  height: 60px;	background-color:black; opacity:0.8; filter: alpha(opacity=80);}
+
+#timer_div{position:relative; left:10px; top:10px; font-size:25px;}
+
+#sideSet2{	position:relative; width:100%; height:30px; margin-top:0px;}
+#rawDataRadios{ position:absolute; left:10px;	width:170px;  top:30px;  font-size:12px;}
+
+
+#user_address{	position:relative; width:200px; height:115px; margin-top:15px; font-size:18px; text-align: center; padding-top:5px; }
+.text{	width:160px;color: black;font-size:10px;} 
+#address_start{position:absolute; top:30px; left:25px;}
+#address_end{position:absolute; top:55px;left:25px;}
+.circle {
+	position:absolute; 
+	margin-left: 5px;
+  	border-radius: 50%;
+  	width: 20px;
+  	height: 20px;    
+}
+#circle_start{background-color:green;top:30px; }
+#circle_end{background-color:red;top:55px;}
+/*#geocode_button{border: 1px solid #666; padding:5px; }*/
+
+.input_button {
+	margin-top:55px;
+	margin-left:0px;
+	-moz-box-shadow:inset 1px -50px 0px -50px #ffffff;
+	-webkit-box-shadow:inset 1px -50px 0px -50px #ffffff;
+	box-shadow:inset 1px -50px 0px -50px #ffffff;
+	background-color:#302b30;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #ffffff;
+	display:inline-block;
+	color:#ffffff;
+	font-family:arial;
+	font-size:19px;
+	font-weight:normal;
+	padding:-2px 30px;
+	text-decoration:none;
+}.input_button:hover {
+	background-color:gray;
+}.input_button:active {
+	position:relative;
+	top:1px;
+}
+
+
+#timer{			position:relative; width:100%;	height:50px; margin-top:15px;}
+#sideOut{		position:relative; width:100%;	height:40px; margin-top:15px;}
+#about{	 		position:absolute; top:70px;	padding-left:10px;	padding-right:10px; max-width:100%;  font-size:90%;  }
+#dataHeader{	position:absolute; top:105px;	padding-left:10px;	padding-right:10px; max-width:100%;}	
+#dataSources{	position:absolute; top:120px;	padding-left:10px;	padding-right:10px; max-width:100%;  font-size:90%;  }
+
+/* report out box */
+.rep{}
+#report{ position:absolute; top:10%; left:50%; width:200px; height:60px; margin-left:-100px; z-index:1;}
+#report-text{ position:absolute; top:10%; left:50%; width:200px; height:35px; margin-left:-100px; margin-top: 4px; text-align:center; z-index:1;}
+
+
+.col_template{ font-size:12px; padding-top:4px; padding-left:4px;}
+
+/* define tag class */
+.tag{ background-color:green; position: absolute;}
+
+/* Zone Tag Positions */
+#tag-0{top:30%; left:30%; width:5px;  height:30px;  margin-top: -5px;  margin-left: -5px}
+#tag-1{top:30%; left:30%; width:30px; height: 5px;  margin-top: -5px;  margin-left: -5px; overflow:hidden;}
+#tag-2{top:30%; left:70%; width:5px;  height:30px;  margin-top: -5px;  margin-left: -0px}
+#tag-3{top:30%; left:70%; width:30px; height: 5px;  margin-top: -5px;  margin-left: -25px; overflow:hidden;}
+#tag-4{top:70%; left:30%; width:5px;  height:30px;  margin-top:-25px;  margin-left: -5px}
+#tag-5{top:70%; left:30%; width:30px; height: 5px;  margin-top: -0px;  margin-left: -5px; overflow:hidden;}
+#tag-6{top:70%; left:70%; width:5px;  height:30px;  margin-top:-25px;  margin-left: -0px}
+#tag-7{top:70%; left:70%; width:30px; height: 5px;  margin-top: -0px;  margin-left: -25px; overflow:hidden;}
+
+/* chart class */
+.chart{position:absolute; right:20px; width:200px; height: 125px;}
+	
+/* chart positions */	
+#chart-1{top:20px; }
+#chart-2{top:155px;}
+#chart-3{top:290px;}
+
+
+
+/* Legend position */	
+#legend{position:absolute; top:500px; right:20px; width:200px; height:40px; margin-left:-100px; z-index:1;}
+
+
+	
+a {color: #3BB9FF}  /* maybe change this as it's not visible over light coloured maps; was this: #3BB9FF */
+
+a:link{text-decoration: none}
+a:hover{text-decoration: underline}
+
+

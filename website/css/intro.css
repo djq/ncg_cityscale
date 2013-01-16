@@ -1,0 +1,99 @@
+body{
+
+	background-color: black;
+	font-family: 'Glegoo', sans-serif;
+	z-index: 1000;
+}
+
+.footer{
+	position: absolute;
+	bottom: 0px;
+	height: 300px;
+	width: 100%;	
+	margin: 0px;
+	padding: 0px;
+	
+}
+#roads{
+	opacity: 0.04;	/*this may not work on IE; check*/
+	background-image:url('http://ncg.urbmet.com/v6/img/roads.png');
+}
+
+#gradient-bg {   
+   background-color: DimGray ;    
+   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(black), to(DimGray));
+   background-image: -webkit-linear-gradient(top, black, DimGray ); 
+   background-image:    -moz-linear-gradient(top, black, DimGray );
+   background-image:     -ms-linear-gradient(top, black, DimGray );
+   background-image:      -o-linear-gradient(top, black, DimGray );   
+}
+
+.wrapper{
+	width:960px;	
+	/*height: 400px;*/
+	left:50%;		
+	margin-left:-480px;
+	margin-top: 50px;
+   	position: relative;  
+   	
+}
+
+#worktitle{
+	font-family: 'arial', sans-serif;
+	position: relative;
+	width: 100%;
+	margin-bottom: 10px;
+	left: 5px;	
+	float: left;
+	font-size: 20px;
+	opacity: 0.7;
+	
+}
+
+.version{	
+	position: relative;
+    float: left;
+    margin: 15px;
+	width: 280px;
+	height: 200px;
+	border-style:solid;
+	border-width: 5px;
+	border-color:white;	
+	background-color: black;
+	border-radius: 12px;
+}
+.version:hover{
+	border-color:gray;	
+	opacity: 0.8;
+}
+
+#worktitle{
+	position: relative;
+	width: 100%;
+	margin-left: 10px;
+	float: left;
+	font-size: 40px;	
+	color: white;
+	font-weight: bold;
+}
+
+.title{
+	position: relative;
+	margin:10px;
+	float:center;
+	font-weight: bold;
+	color: white;
+	font-size: 20px;
+}
+
+.progress{
+	position: relative;
+	margin:10px;
+	float:center;	
+	color: white;
+}
+
+a:link {text-decoration:none; color: gray}
+a:visited {text-decoration:none;color: gray}
+a:hover {text-decoration:none;color: gray}
+a:active {text-decoration:none;color: gray}
