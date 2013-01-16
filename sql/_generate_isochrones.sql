@@ -12,28 +12,30 @@ INSERT INTO home_isodist (max_cost, geom) (
 /***************
 drop definitions
 ***************/
-DROP TABLE _ncg_isodist_dublin;
-DROP FUNCTION _ncg_isodist(integer, integer);
-DROP TYPE _ncg_isodist_table;
+--DROP TABLE _ncg_isodist_dublin;
+--DROP FUNCTION _ncg_isodist_500(integer, integer);
+--DROP TYPE _ncg_isodist_table;
 
 /***************
 table definition
 ***************/
 -- create table to store results (I think?)
-CREATE TABLE _ncg_isodist_dublin (fish_id integer, road_id integer, max_cost double precision);
-SELECT AddGeometryColumn('_ncg_isodist_dublin','geom',900913,'GEOMETRYCOLLECTION',2);
+--CREATE TABLE _ncg_isodist_dublin (fish_id integer, road_id integer, max_cost double precision);
+--SELECT AddGeometryColumn('_ncg_isodist_dublin','geom',900913,'GEOMETRYCOLLECTION',2);
 
 -- create object type for _ncg_driving_distance
+/*
 CREATE TYPE _ncg_isodist_table AS (
 	road_id integer, 
 	fish_id integer, 
 	cost    double precision,
 	geom    geometry );
+*/
 
 /******************
 function definition
 *******************/
-CREATE OR REPLACE FUNCTION _ncg_isodist(
+CREATE OR REPLACE FUNCTION _ncg_isodist_500(
 	_fish_id    integer,
 	_road_id    integer	
 	)
@@ -55,7 +57,7 @@ BEGIN
 				AND d.road_id = _road_id) as x
 		WHERE GeometryType(x.cgeom) = 'GEOMETRYCOLLECTION' 
 		AND ST_IsValid(x.cgeom) = TRUE);
-
+/*
 	INSERT INTO _ncg_isodist_dublin (fish_id, road_id, max_cost, geom) (
 		SELECT 
 			_fish_id,	
@@ -151,7 +153,7 @@ BEGIN
 				AND d.road_id = _road_id) as x
 		WHERE GeometryType(x.cgeom) = 'GEOMETRYCOLLECTION' 
 		AND ST_IsValid(x.cgeom) = TRUE);	
-
+*/
   END;
 $$ LANGUAGE plpgsql;
 

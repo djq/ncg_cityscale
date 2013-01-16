@@ -1,0 +1,2 @@
+-- https://www.question-defense.com/2009/01/09/how-to-dump-the-data-from-one-postgresql-table
+-- pg_dump -a -t table_name -f file_name routing
