@@ -15,6 +15,16 @@
 
   <title>cityscale</title>
 
+    <!--style + JS -->
+    <link rel="stylesheet" href="css/jquery.mobile-1.0.min.css">
+    <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
+    <link rel="stylesheet" href="http://openlayers.org/dev/theme/default/style.mobile.css" type="text/css">
+    <link rel="stylesheet" href="style.mobile-jq.css" type="text/css">
+    <script src="http://openlayers.org/dev/OpenLayers.mobile.js"></script>
+    <script src="mobile-base.js"></script>
+    <script src="mobile-jq.js"></script>
+
     <!--foundation -->
     <!-- Included CSS Files (Uncompressed) -->
     <link rel="stylesheet" href="stylesheets/foundation.css">
@@ -25,7 +35,6 @@
       -->
     <link rel="stylesheet" href="stylesheets/app.css">
     <script src="javascripts/modernizr.foundation.js"></script>
-
 
 
 
@@ -141,22 +150,58 @@
   </li>
   <li id="simple2Tab">
     <div class="twelve columns">
-      <div id="map" >
-      </div>
-    </div> 
+            
+        <div data-role="page" id="mappage">
+          <div data-role="content">
+            <div id="map"></div>
+          </div>
 
-    <!-- Sidebar controls -->
-    <div id="sidebar" >
+<!--
+          <div data-role="footer">
+            <a href="#searchpage" data-icon="search" data-role="button">Search</a>
+            <a href="#" id="locate" data-icon="locate" data-role="button">Locate</a>
+            <a href="#layerspage" data-icon="layers" data-role="button">Layers</a>
+          </div>
+          <div id="navigation" data-role="controlgroup" data-type="vertical">
+            <a href="#" data-role="button" data-icon="plus" id="plus"
+               data-iconpos="notext"></a>
+            <a href="#" data-role="button" data-icon="minus" id="minus"
+               data-iconpos="notext"></a>
+          </div>
+        </div>
 
-  
-        
-    </div>  
+        <div data-role="page" id="searchpage">
+          <div data-role="header">
+            <h1>Search</h1>
+          </div>
+          <div data-role="fieldcontain">
+            <input type="search" name="query" id="query"
+                   value="" placeholder="Search for places"
+                   autocomplete="off"/>
+          </div>
+          <ul data-role="listview" data-inset="true" id="search_results"></ul> 
+        </div>
 
-    <!-- Report output box -->
-    <div id="report" class="grayBg rep">        
-      <div id="report-text" clas="rep"></div>   
-    </div>  
+        <div data-role="page" id="layerspage">
+          <div data-role="header">
+            <h1>Layers</h1>
+          </div>
+          <div data-role="content">
+            <ul data-role="listview" data-inset="true" data-theme="d" data-dividertheme="c" id="layerslist">
+            </ul>
+          </div>
+        </div>
 
+        <div id="popup" data-role="dialog">
+            <div data-position="inline" data-theme="d" data-role="header">
+                <h1>Details</h1>
+            </div>
+            <div data-theme="c" data-role="content">
+                <ul id="details-list" data-role="listview">
+                </ul>
+            </div>
+        </div>
+    </div> -->
 
   </li> 
 </ul>
@@ -183,14 +228,13 @@
 
   <!-- Included JS Files (Uncompressed) -->
   
-   <script src="javascripts/jquery.js"></script>
-  
+  <!-- <script src="javascripts/jquery.js"></script> -->  
   
   <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
   
-  <script src="javascripts/jquery.foundation.forms.js"></script>
+  <!--<script src="javascripts/jquery.foundation.forms.js"></script> -->
   
-  <script src="javascripts/jquery.foundation.reveal.js"></script>
+  <!-- <script src="javascripts/jquery.foundation.reveal.js"></script> -->
   
   <script src="javascripts/jquery.foundation.orbit.js"></script>
   
@@ -224,9 +268,10 @@
   <script src="javascripts/foundation.min.js"></script>
   -->
 
+
   <!-- Initialize JS Plugins -->
   <script src="javascripts/app.js"></script>
 
 
-</body>
+</body onload="init()">
 </html>
